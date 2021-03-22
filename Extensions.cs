@@ -17,7 +17,7 @@ namespace Uppgift5
             {
                 Timestamp = int.Parse(data[0]),
                 Temperature = double.Parse(data[1], CultureInfo.InvariantCulture),
-                DateTime = data[2]
+                DateTime = DateTime.Parse(data[2])
             }).AsEnumerable();
             return tempData;
         }
@@ -33,17 +33,39 @@ namespace Uppgift5
                     orderby d.Temperature descending
                     select d).Take(1);
         }
+        public static IEnumerable<TemperatureData> SelectDayTime(this IEnumerable<TemperatureData> data)
+        {
+            return from d in data
+                   where d.DateTime.Hour >= 8 && d.DateTime.Hour < 17
+                   select d;
+        }
+        public static IEnumerable<TemperatureData> SelectNightTime(this IEnumerable<TemperatureData> data)
+        {
+            return from d in data
+                   where d.DateTime.Hour >= 0 && d.DateTime.Hour < 5
+                   select d;
+        }
         public static double GetAverageTemp(this IEnumerable<TemperatureData> data)
         {
             var sumTemperatures = data.Select(d => d.Temperature).Sum();
             var numOfMeasurements = data.Count();
-            var timestamps = data.Select(d => d.Timestamp);
-            var startTime = timestamps.Take(1).First();
-            var endTime = timestamps.TakeLast(1).First();
-            var totalTime = endTime - startTime;
-            var inhours = (double)totalTime / 3600;
-            var indays = inhours / 24;
-            Console.WriteLine($"Total time:{totalTime} s = {inhours:N2} h = {indays:N2} days");
+
+            //var timestamps = data.Select(d => d.Timestamp);
+            //var totalTimeInSeconds = 0;
+            //var startTime = timestamps.First();
+            //var temp = startTime;
+            //foreach (var timestamp in timestamps)
+            //{
+            //    var interval = timestamp - temp;
+            //    if (interval < 10000)
+            //    {
+            //        totalTimeInSeconds += interval;
+            //    }
+            //    temp = timestamp;
+            //}
+            //var inhours = (double)totalTimeInSeconds / 3600;
+            //var indays = inhours / 24;
+            //Console.WriteLine($"Total time:{totalTimeInSeconds} s = {inhours:N2} h = {indays:N2} days");
             return sumTemperatures / numOfMeasurements;
         }
     }

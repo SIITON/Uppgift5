@@ -8,7 +8,7 @@ namespace Uppgift5
     {
         public int Timestamp {get; set;}
         public double Temperature { get; set; }
-        public string DateTime { get; set; }
+        public DateTime DateTime { get; set; }
         //public List<double> Temp { get; private set; }
         //public List<int> Seconds { get; private set; }
         //public TemperatureData()
