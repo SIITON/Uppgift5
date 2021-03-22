@@ -47,26 +47,9 @@ namespace Uppgift5
         }
         public static double GetAverageTemp(this IEnumerable<TemperatureData> data)
         {
-            var sumTemperatures = data.Select(d => d.Temperature).Sum();
+            var sumOfTemperatures = data.Select(d => d.Temperature).Sum();
             var numOfMeasurements = data.Count();
-
-            //var timestamps = data.Select(d => d.Timestamp);
-            //var totalTimeInSeconds = 0;
-            //var startTime = timestamps.First();
-            //var temp = startTime;
-            //foreach (var timestamp in timestamps)
-            //{
-            //    var interval = timestamp - temp;
-            //    if (interval < 10000)
-            //    {
-            //        totalTimeInSeconds += interval;
-            //    }
-            //    temp = timestamp;
-            //}
-            //var inhours = (double)totalTimeInSeconds / 3600;
-            //var indays = inhours / 24;
-            //Console.WriteLine($"Total time:{totalTimeInSeconds} s = {inhours:N2} h = {indays:N2} days");
-            return sumTemperatures / numOfMeasurements;
+            return sumOfTemperatures / numOfMeasurements;
         }
     }
 }
