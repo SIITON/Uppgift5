@@ -79,5 +79,26 @@ namespace Tests
             }
             
         }
+        [TestMethod]
+        public void Takes_Warmest_Data_Correct()
+        {
+            string[] data = {"1615878151;1.3;2021-03-16 08:02:31",
+                             "1615878919;1.8;2021-03-16 08:15:19",
+                             "1615879831;2.3;2021-03-16 08:30:31"};
+            var csvData = data.Select(l => l.Split(';').ToArray());
+            var tempData = csvData.Select(data => new TemperatureData
+            {
+                Timestamp = int.Parse(data[0]),
+                Temperature = double.Parse(data[1], CultureInfo.InvariantCulture),
+                DateTime = DateTime.Parse(data[2])
+            }).AsEnumerable();
+            var warmest = tempData.TakeWarmest();
+            foreach (var measurement in warmest)
+            {
+                Assert.AreEqual(2.3, measurement.Temperature);
+                Assert.AreEqual(30, measurement.DateTime.Minute);
+            }
+
+        }
     }
 }
